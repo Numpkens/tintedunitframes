@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: TintedUnitFrames
+## Notes: Dynamically colors player and target frames based on class and reaction.
+## Author: Numpkins
+## Version 1.0
+## IconTexture: Interface\AddOns\TintedUnitFrames\icon
+tintedunitframes.lua
