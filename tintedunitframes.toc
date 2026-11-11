@@ -2,6 +2,6 @@
 ## Title: TintedUnitFrames
 ## Notes: Dynamically colors player and target frames based on class and reaction.
 ## Author: Numpkins
-## Version 1.0
+## Version 1.1
 ## IconTexture: Interface\AddOns\TintedUnitFrames\icon
 tintedunitframes.lua
