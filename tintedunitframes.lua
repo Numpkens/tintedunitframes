@@ -90,6 +90,25 @@ local function ApplyFocusColor()
     end
 end
 
+local function ApplyPartyColors()
+    for i = 1, 4 do
+        local partyFrame = _G["PartyMemberFrame" .. i]
+        local unit = "party" .. i
+
+        if partyFrame and partyFrame:IsShown() and UnitExists(unit) then
+            local _, englishClass = UnitClass(unit)
+            if englishClass and CLASS_COLORS[englishClass] then
+                local color = CLASS_COLORS[englishClass]
+                local healthBar = _G["PartyMemberFrame" .. i .. "HealthBar"]
+                if healthBar then
+                    healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+                    healthBar:SetStatusBarColor(color.r, color.g, color.b)
+                end
+            end
+        end
+     end
+end
+
 local function ApplyBossColors()
     for i = 1, 5 do
         local bossFrame = _G["Boss" .. i .. "TargetFrame"]
@@ -106,21 +125,28 @@ eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
 eventFrame:RegisterEvent("PLAYER_FOCUS_CHANGED")
 eventFrame:RegisterEvent("UNIT_PET")
+eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+eventFrame:RegisterEvent("GROUP_ROSTER_UPDATE")
 
 eventFrame:SetScript("OnEvent", function(self, event, ...)
--- Run color updates based on what event just triggered
+
 if event == "PLAYER_ENTERING_WORLD" then
     ApplyPlayerClassColor()
     ApplyPetClassColor()
     elseif event == "PLAYER_TARGET_CHANGED" then
         ApplyTargetColor()
         ApplyBossColors()
-        elseif event == "PLAYER_FOCUS_CHANGED" then
-            ApplyFocusColor()
-            elseif event == "UNIT_PET" and ... == "player" then
-                ApplyPetClassColor()
-                end
-            end)
+    elseif event == "PLAYER_FOCUS_CHANGED" then
+        ApplyFocusColor()
+    elseif event == "UNIT_PET" and ... == "player" then
+        ApplyPetClassColor()
+    elseif event == "UPDATE_SHAPESHIFT_FORM" then
+        ApplyPlayerClassColor()
+        ApplyTargetColor()
+    elseif event == "GROUP_ROSTER_UPDATE" then
+        ApplyPartyColors()
+    end
+end)
 
 SLASH_TINTEDUNITFRAMES1 = "/tuf"
 SlashCmdList["TINTEDUNITFRAMES"] = function(msg)
